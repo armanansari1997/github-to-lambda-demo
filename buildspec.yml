@@ -1,10 +1,10 @@
 version: 0.2
-phase:
+phases:
   install:
     runtime-versions:
       python: 3.11
     commands:
-      - echo "Installing Dependencies..."
+      - echo "Installing dependencies..."
       - pip install -r requirements.txt -t lib
   build:
     commands:
@@ -15,10 +15,8 @@ phase:
       - zip -g deployment_package.zip lambda_function.py
   post_build:
     commands:
-      - echo "Uploadig to S3..."
+      - echo "Uploading to S3..."
       - aws s3 cp deployment_package.zip s3://lambda-builds-zip-arman/
       - echo "Updating Lambda function via S3..."
       - aws lambda update-function-code --function-name github-to-lambda-cicd --s3-bucket lambda-builds-zip-arman --s3-key deployment_package.zip
-      - echo "Deployment Complete..."
-
-
+      - echo "Deployment complete!"
